@@ -1,6 +1,6 @@
 var letter_size = 0;
 var letter_array = [];
-var number;
+
 
 function save_localStorage_key(letter_index) {
      // Because localStorage is key -> value, we also register it's timestamp
@@ -15,8 +15,9 @@ function print_key_console(keynum) {
 function get_key(key) {
     // We print the key
     print_key_console(key.key);
-    // Save it into localStorage
+    //we save the letter into a array
     letter_array.push(key.key);
+    // Save it into localStorage. We save a index and not the letter to avoid overwrite with the same letters
     save_localStorage_key(letter_size++);
     console.log("Letter_size", letter_size);
 }
@@ -28,9 +29,11 @@ function get_delay(i) {
 }
 
 function set_delay(i, delay) {
+    
     console.log("delay for ", letter_array[i] ," is ", localStorage.getItem(i));
     var tempo = setTimeout(function(){ 
         console.log("array is ",letter_array[i]);
+        document.getElementById("repeat_area").innerHTML = letter_array[i];
     }, delay);
 }
 

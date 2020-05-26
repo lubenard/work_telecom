@@ -3,6 +3,7 @@
   <head>
     <meta charset="utf-8">
     <title>Key Logger</title>
+    <link rel="stylesheet" type="text/css" href="res/style.css">
     <script src="js/key_handler.js"></script>
   </head>
   <body>
@@ -10,8 +11,10 @@
     <main>
          <form>
             <input type="text" id="key_type" onclick="get_onclick_timestamp()" onkeypress="get_key(event)" placeholder="Please type here..." >
-            <button type="button" onclick="replay()">Replay</button>
-        </form> 
+            <br>
+            <button type="button" onclick="replay()" style="border-radius: 6px;border: 2px solid black;">Replay</button>
+        </form>
+        <h1 id="repeat_area"> </h1>
     </main>
     <footer></footer>
   </body>
