@@ -7,15 +7,19 @@
     <script src="js/key_handler.js"></script>
   </head>
   <body>
-    <header></header>
     <main>
          <form>
-            <input type="text" id="key_type" onclick="get_onclick_timestamp()" onkeypress="get_key(event)" placeholder="Please type here..." >
-            <br>
-            <button type="button" onclick="replay()" style="border-radius: 6px;border: 2px solid black;">Replay</button>
+            <input type="text" id="key_type" onclick="clear_textbox()" onkeypress="get_key(event)" placeholder="Please type here..." >
+            <br><br>
+            <button type="button" onclick="set_start_time()" >Démarrer l'enregistrement</button>
+            <br><br>
+            <button type="button" onclick="stop_recording()" >Arreter l'enregistrement</button>
+            <br><br>
+            <button type="button" onclick="replay()" >Rejouer</button>
+            <br><br>
+            <button type="button" onclick="reset()" >Réinitialiser</button>
         </form>
         <h1 id="repeat_area"> </h1>
     </main>
-    <footer></footer>
   </body>
 </html>

@@ -1,7 +1,6 @@
 var letter_size = 0;
 var letter_array = [];
 
-
 function save_localStorage_key(letter_index) {
      // Because localStorage is key -> value, we also register it's timestamp
      localStorage.setItem(letter_index, Date.now());
@@ -12,6 +11,18 @@ function print_key_console(keynum) {
      console.log("Key pressed: ", keynum);
 }
 
+function clear_textbox() {
+    document.getElementById("key_type").value = "";
+    letter_array = [];
+    letter_size = 0;
+}
+
+function reset(){
+        clear_textbox();
+        localStorage.removeItem("start_timer");
+        document.getElementById("repeat_area").innerHTML = "";
+}
+
 function get_key(key) {
     // We print the key
     print_key_console(key.key);
@@ -19,6 +30,11 @@ function get_key(key) {
     letter_array.push(key.key);
     // Save it into localStorage. We save a index and not the letter to avoid overwrite with the same letters
     save_localStorage_key(letter_size++);
+    //we check if the key is the first in the string and if start_timer is not set_delay
+    if (letter_array.lenght == 0 && !(localStorage.getItem("start_timer")))
+    {
+        set_start_time(localStorage.getItem("0"));
+    }
     console.log("Letter_size", letter_size);
 }
 
@@ -30,10 +46,10 @@ function get_delay(i) {
 
 function set_delay(i, delay) {
     
-    console.log("delay for ", letter_array[i] ," is ", localStorage.getItem(i));
+    console.log("delay for ", letter_array[i] ," is ", delay);
     var tempo = setTimeout(function(){ 
         console.log("array is ",letter_array[i]);
-        document.getElementById("repeat_area").innerHTML = letter_array[i];
+        document.getElementById("repeat_area").innerHTML += letter_array[i];
     }, delay);
 }
 
@@ -49,7 +65,7 @@ function replay() {
     //localStorage.clear();
 }
 
-function get_onclick_timestamp() {
+function set_start_time(start_time) {
     localStorage.removeItem("start_timer");
     // We check if it already exist in localStorage.
     // If not, we store it, and if it already exist, we use it as start.
