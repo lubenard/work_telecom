@@ -9,22 +9,17 @@
   <body>
     <main>
          <form>
-            <!--onclick="clear_textbox()"-->
             <input type="text" id="key_type"  onkeypress="get_key(event)" placeholder="Please type here..." >
             <br><br>
-            <button type="button" onclick="set_start_time()" >Démarrer l'enregistrement</button>
+            <button type="button" onclick="set_start_time(-1)" >Démarrer l'enregistrement</button>
             <br><br>
             <button type="button" onclick="set_end_time()" >Arreter l'enregistrement</button>
             <br><br>
             <button type="button" onclick="replay()" >Rejouer</button>
             <br><br>
-            <button type="button" onclick="reset()" >Réinitialiser</button>
+            <button type="button" onclick="reset_fields()" >Réinitialiser</button>
         </form>
         <h1 id="repeat_area"> </h1>
-        <br><br>
-        <div id="bar_bg">
-            <div id="bar_progress"></div>
-        </div>
     </main>
   </body>
 </html>
