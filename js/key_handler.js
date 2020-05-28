@@ -31,17 +31,44 @@ function reset_fields() {
         localStorage.clear();
 }
 
+//This function's goal is to find the cursor position, and delete the corresponding characters in the table
+function del_elem() {
+        var text_area = document.getElementById('key_type');
+        var startPosition = text_area.selectionStart;
+        var endPosition = text_area.selectionEnd;
+        
+        // Check if you've selected text
+        if(startPosition == endPosition) {
+            console.log("The position of the cursor is (" + startPosition + "/" + text_area.value.length + ")");
+            letter_array.splice(startPosition - 1, 1);
+            localStorage.removeItem(letter_size);
+            letter_size--;
+            console.log("deleted element, new array is ", letter_array);
+        } else {
+            console.log("Selected text from ("+ startPosition +" to "+ endPosition + " of " + text_area.value.length + ")");
+            letter_array.splice(startPosition, endPosition - startPosition);
+            for (j = startPosition; j < endPosition; j++)
+                localStorage.removeItem(j);
+            letter_size -= endPosition - startPosition;
+            console.log("deleted element, new array is ", letter_array);
+        }
+}
+
 //This function's goal is to reset all fields
 function get_key(key) {
-    // We print the key
-    print_key_console(key.key);
-    //we save the letter into a array
-    letter_array.push(key.key);
-    // Save it into localStorage. We save a index and not the letter to avoid overwrite with the same letters
-    save_localStorage_key(letter_size++);
-    //we check if the key is the first in the string and if start_timer is not set
-    if (letter_array.length == 1 && !localStorage.getItem("start_timer"))
-        set_start_time(localStorage.getItem("0"));
+    if (key.key == "Backspace")
+        del_elem();
+    else if (key.key.length == 1) {
+        // We print the key
+        print_key_console(key.key);
+        //we save the letter into a array
+        letter_array.push(key.key);
+        // Save it into localStorage. We save a index and not the letter to avoid overwrite with the same letters
+        save_localStorage_key(letter_size++);
+        //we check if the key is the first in the string and if start_timer is not set
+        if (letter_array.length == 1 && !localStorage.getItem("start_timer"))
+            set_start_time(localStorage.getItem("0"));
+    }
 }
 
 //This function's goal is to return the delay for the key
@@ -65,7 +92,7 @@ function replay() {
     console.log("------REPLAY-----");
     //we clear the display area
     document.getElementById("repeat_area").innerHTML = "";
-    //We are looping for each key, and check if the timer is correct, due to end_timer
+    //We are looping for each key, and check if the timer is correct, due to end_timer and start_timer
     for (i = 0; i < letter_array.length; i++)
     {
         delay = get_delay(i);

@@ -1,4 +1,6 @@
 #key_type {
+    border: 1px solid lightgray;
+    border-radius: 5px;
     display: block;
     margin-left: auto;
     margin-right: auto;
