@@ -1,5 +1,6 @@
 var letter_size = 0;
 var letter_array = [];
+var index_letter_removed = [];
 
 //This function's goal is clear fields when the page load
 window.onload = function(){
@@ -13,11 +14,6 @@ function save_localStorage_key(letter_index) {
      localStorage.setItem(letter_index, Date.now());
 }
 
-//This function's goal is to print the key pressed into the console
-function print_key_console(keynum) {
-     console.log("Key pressed: ", keynum);
-}
-
 //This function's goal is to reset all fields
 function reset_fields() {
         console.log("Resetting all fields...");
@@ -27,6 +23,7 @@ function reset_fields() {
         //we clear the variables
         letter_array = [];
         letter_size = 0;
+        index_letter_removed = [];
         //We clear the local storage
         localStorage.clear();
 }
@@ -39,28 +36,24 @@ function del_elem() {
         
         // Check if you've selected text
         if(startPosition == endPosition) {
-            console.log("The position of the cursor is (" + startPosition + "/" + text_area.value.length + ")");
-            letter_array.splice(startPosition - 1, 1);
             localStorage.removeItem(letter_size);
-            letter_size--;
-            console.log("deleted element, new array is ", letter_array);
+            index_letter_removed.push(letter_size);
         } else {
-            console.log("Selected text from ("+ startPosition +" to "+ endPosition + " of " + text_area.value.length + ")");
-            letter_array.splice(startPosition, endPosition - startPosition);
-            for (j = startPosition; j < endPosition; j++)
+            for (j = startPosition; j < endPosition; j++) {
                 localStorage.removeItem(j);
-            letter_size -= endPosition - startPosition;
-            console.log("deleted element, new array is ", letter_array);
+                index_letter_removed.push(j);
+            }
         }
 }
 
 //This function's goal is to reset all fields
 function get_key(key) {
+    //If the key is a Backspace, launch the right function
     if (key.key == "Backspace")
         del_elem();
     else if (key.key.length == 1) {
         // We print the key
-        print_key_console(key.key);
+        console.log("Key pressed: ", key.key);
         //we save the letter into a array
         letter_array.push(key.key);
         // Save it into localStorage. We save a index and not the letter to avoid overwrite with the same letters
@@ -78,9 +71,9 @@ function get_delay(i) {
 
 //This function's goal is to set a timeout for each key
 function set_delay(i, delay) {
-    console.log("delay for ", letter_array[i] ," is ", delay);
     var tempo = setTimeout(function(){
         document.getElementById("repeat_area").innerHTML += letter_array[i];
+        console.log("Repeating key: ", letter_array[i]);
     }, delay);
 }
 
@@ -93,8 +86,10 @@ function replay() {
     //we clear the display area
     document.getElementById("repeat_area").innerHTML = "";
     //We are looping for each key, and check if the timer is correct, due to end_timer and start_timer
-    for (i = 0; i < letter_array.length; i++)
+    for (i = 0; i < letter_size; i++)
     {
+        if (index_letter_removed.indexOf(i) != -1)
+            i++;
         delay = get_delay(i);
         if (localStorage.getItem("end_timer")) {
             if (localStorage.getItem(i) < localStorage.getItem("end_timer") && delay >= 0)
@@ -109,7 +104,7 @@ function replay() {
 function set_end_time() {
     //We store it, and if it already exist, we use it as start.
     // The end timer will be the last key timestamp or this timer
-    console.log("fin timestamp ", Date.now());
+    console.log("End time set");
     localStorage.setItem("end_timer", Date.now());
 }
 
@@ -117,6 +112,7 @@ function set_end_time() {
 function set_start_time(start_time) {
     //We store it, and check if start time might be overwritten by button
     // The end timer will be the last key timestamp
+    console.log("Start time set");
     if (start_time == -1)
     {
         console.log("Overriden by button");
