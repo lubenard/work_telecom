@@ -60,17 +60,21 @@ function set_delay(i, delay) {
 //This function's goal is to replay the keys.
 function replay() {
     var i = 0;
+    var delay;
     
     console.log("------REPLAY-----");
+    //we clear the display area
     document.getElementById("repeat_area").innerHTML = "";
+    //We are looping for each key, and check if the timer is correct, due to end_timer
     for (i = 0; i < letter_array.length; i++)
-    { 
+    {
+        delay = get_delay(i);
         if (localStorage.getItem("end_timer")) {
-            if (localStorage.getItem(i) < localStorage.getItem("end_timer"))
-                set_delay(i, get_delay(i));
+            if (localStorage.getItem(i) < localStorage.getItem("end_timer") && delay >= 0)
+                set_delay(i, delay);
         }
-        else
-            set_delay(i, get_delay(i));
+        else if (delay >= 0)
+            set_delay(i, delay);
     }
 }
 
@@ -88,7 +92,7 @@ function set_start_time(start_time) {
     // The end timer will be the last key timestamp
     if (start_time == -1)
     {
-        console.log("début timestamp ", Date.now());
+        console.log("Overriden by button");
         localStorage.setItem("start_timer", Date.now());
     }
     else
